@@ -11,7 +11,7 @@ triage, prioritization, assignment, SLA risk tracking, lifecycle management, and
 - Query Layer: `pg` with a clean DB/service module
 - Charts: Recharts
 - Auth: Mock login context (extensible to real auth later)
-- Deployment: Render Web Service + Render Postgres
+- Deployment: Vercel (frontend) + Koyeb (backend) + Neon Postgres
 - Structure: Monorepo (`/client`, `/server`)
 
 ## Features
@@ -105,10 +105,10 @@ Base URL: `/api`
 - `PATCH /tickets/:id`
 - `POST /notes`
 - `GET /assets`
-- `POST /assets` (Admin)
+- `POST /assets` (Agent/Admin)
 - `PATCH /assets/:id` (Admin)
 - `GET /knowledge-base`
-- `POST /knowledge-base` (Admin)
+- `POST /knowledge-base` (Agent/Admin)
 
 ## Local Setup
 
@@ -180,33 +180,42 @@ Client:
 - `npm run dev --workspace client`
 - `npm run build --workspace client`
 
-## Render Deployment
+## Deployment (Vercel + Koyeb + Neon)
 
-### Services
-1. Create a Render Postgres instance
-2. Create a Render Web Service for backend (`server`)
-3. Create a Render Static Site (or second Web Service) for frontend (`client`)
+### Architecture
+1. Neon Postgres for managed free-tier database
+2. Koyeb Web Service for backend API (`server`)
+3. Vercel project for frontend SPA (`client`)
 
-### Backend settings
-- Root Directory: `server`
-- Build Command: `npm install`
-- Start Command: `npm run start`
-- Env Vars:
+### 1) Neon Postgres
+- Create a Neon project and copy the connection string
+- Use this as `DATABASE_URL` in backend hosting
+
+### 2) Backend on Koyeb
+- Create app from GitHub repo
+- Service name: `ticketnow-api`
+- Root directory: `server`
+- Build command: `npm install`
+- Run command: `npm run start`
+- Environment variables:
   - `NODE_ENV=production`
-  - `PORT=10000` (or Render default)
-  - `DATABASE_URL=<Render Postgres Internal URL>`
-  - `CLIENT_URL=<frontend public URL>`
+  - `PORT=8000`
+  - `DATABASE_URL=<Neon connection string>`
+  - `CLIENT_URL=<your Vercel frontend URL>`
   - `AGING_THRESHOLD_HOURS=48`
 
-Run seed once after deployment:
-- Render Shell/One-off command: `npm run seed`
+After first deploy, run seed once in Koyeb console:
+- `npm run seed`
 
-### Frontend settings
-- Root Directory: `client`
-- Build Command: `npm install && npm run build`
-- Publish Directory: `dist`
-- Env Vars:
-  - `VITE_API_BASE_URL=<backend public URL>/api`
+### 3) Frontend on Vercel
+- Import GitHub repo into Vercel
+- Set root directory to `client`
+- Build command: `npm install && npm run build`
+- Output directory: `dist`
+- Environment variables:
+  - `VITE_API_BASE_URL=<Koyeb backend URL>/api`
+
+`client/vercel.json` is included to rewrite all routes to `index.html` for React Router.
 
 ## Incremental Build Checklist (Implemented)
 
@@ -214,7 +223,7 @@ Run seed once after deployment:
 2. Backend API + validation + logging + error handling
 3. Frontend pages + reusable components + analytics charts
 4. Seed data (28 tickets) + smoke test
-5. Local run docs + Render deployment guide
+5. Local run docs + cloud deployment guide
 
 ## Suggested Resume Bullets
 
