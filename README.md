@@ -196,18 +196,3 @@ Run seed once after deployment:
 3. Frontend pages + reusable components + analytics charts
 4. Seed data (28 tickets) + smoke test
 5. Local run docs + Render deployment guide
-
-## Suggested Resume Bullets
-
-- Built a full-stack IT support ticketing platform (React, Express, PostgreSQL) with realistic triage, assignment, and lifecycle workflows across 5 ticket statuses.
-- Designed relational schema and analytics queries for operational KPIs (ticket volume by status/category/priority, average resolution time, department backlog).
-- Implemented filterable ticket operations dashboard with SLA risk highlighting, escalation notes, status history, and responsive enterprise-style UI.
-- Added demo seed pipeline with realistic incidents and smoke-tested API health endpoints to ensure reproducible local and hosted demos.
-
-## Future Enhancements
-
-- Real auth (JWT/OAuth with role-based access)
-- Attachment upload to cloud storage
-- CSV export endpoint + download button
-- Dark mode toggle
-- More integration tests for CRUD endpoints
