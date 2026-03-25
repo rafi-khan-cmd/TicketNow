@@ -21,12 +21,14 @@ triage, prioritization, assignment, SLA risk tracking, lifecycle management, and
 - Ticket lifecycle
   - statuses: Open, In Progress, Waiting on User, Resolved, Closed
   - assignment, escalation notes, resolution notes, timestamps
+  - impact + urgency fields with SLA-aware triage
 - Dashboard analytics
   - total/open/resolved cards
   - tickets by status/category/priority
   - average resolution hours
   - overdue/SLA risk section
   - recent activity section
+  - SLA breached counter
 - Ticket management page
   - filter by status/priority/category
   - search by title/requester
@@ -40,6 +42,16 @@ triage, prioritization, assignment, SLA risk tracking, lifecycle management, and
 - Triage realism
   - access + high/critical visual flag
   - aging/SLA risk logic based on configurable threshold
+- Asset management
+  - endpoint and infrastructure inventory registry
+  - link tickets to assets
+- Knowledge base
+  - searchable KB articles
+  - related KB suggestions in ticket detail
+- Role-based access (mock auth)
+  - Requester: create/view tickets
+  - Agent: triage/update tickets and add notes
+  - Admin: asset and knowledge base management
 - Seed data
   - 28 realistic tickets and 4 support agents
 
@@ -68,6 +80,8 @@ Core tables:
 - `ticket_notes`
 - `agents`
 - `ticket_status_history`
+- `assets`
+- `knowledge_base_articles`
 
 Includes key fields from the requirement list:
 - `id`, `title`, `description`, `category`, `priority`, `status`
@@ -90,6 +104,11 @@ Base URL: `/api`
 - `POST /tickets`
 - `PATCH /tickets/:id`
 - `POST /notes`
+- `GET /assets`
+- `POST /assets` (Admin)
+- `PATCH /assets/:id` (Admin)
+- `GET /knowledge-base`
+- `POST /knowledge-base` (Admin)
 
 ## Local Setup
 

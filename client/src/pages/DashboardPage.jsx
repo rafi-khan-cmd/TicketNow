@@ -16,11 +16,16 @@ export function DashboardPage() {
 
   return (
     <section>
+      <div className="page-title">
+        <h2>Operations Overview</h2>
+        <p>Track incidents, triage pressure, and resolution performance.</p>
+      </div>
       <div className="stats-grid">
         <StatCard label="Total Incidents" value={data.totals.total} />
         <StatCard label="Open Tickets" value={data.totals.open} hint="Active triage queue" />
         <StatCard label="Resolved Tickets" value={data.totals.resolved} />
         <StatCard label="Avg Resolution (hrs)" value={data.avgResolutionHours.toFixed(1)} />
+        <StatCard label="SLA Breached" value={data.slaBreached} hint="Open incidents past SLA due time" />
       </div>
 
       <div className="panel-grid">

@@ -13,15 +13,17 @@ export function ShellLayout() {
           <NavLink to="/dashboard">Dashboard</NavLink>
           <NavLink to="/tickets">Tickets</NavLink>
           <NavLink to="/tickets/new">Submit Ticket</NavLink>
+          <NavLink to="/assets">Assets</NavLink>
+          <NavLink to="/knowledge-base">Knowledge Base</NavLink>
         </nav>
       </aside>
       <main className="content">
         <header className="topbar">
           <div>
-            <strong>Support Dashboard</strong>
-            <p>Role: {user.role}</p>
+            <strong>Support Operations</strong>
+            <p>Active workspace for triage and incident resolution</p>
           </div>
-          <div className="topbar-chip">Assigned Agent: {user.name}</div>
+          <div className="topbar-chip">Signed in as {user.name} • {user.role}</div>
         </header>
         <Outlet />
       </main>

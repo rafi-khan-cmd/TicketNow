@@ -40,6 +40,10 @@ export function TicketsPage() {
 
   return (
     <section>
+      <div className="page-title">
+        <h2>Ticket Queue</h2>
+        <p>Filter, triage, and export incidents from a single workspace.</p>
+      </div>
       <div className="filters">
         <input placeholder="Search by title or requester" value={filters.q} onChange={(e) => updateFilter("q", e.target.value)} />
         <select value={filters.status} onChange={(e) => updateFilter("status", e.target.value)}>
@@ -59,10 +63,12 @@ export function TicketsPage() {
       {loading ? <p>Loading tickets...</p> : null}
       {error ? <p className="error">{error}</p> : null}
       {!loading && !error && tickets.length === 0 ? <p className="muted">No tickets found for selected filters.</p> : null}
-      <p className="muted">{filteredCountText}</p>
-      <button type="button" onClick={handleExportCsv} disabled={exporting}>
-        {exporting ? "Exporting..." : "Export CSV"}
-      </button>
+      <div className="actions-row">
+        <p className="muted">{filteredCountText}</p>
+        <button type="button" onClick={handleExportCsv} disabled={exporting}>
+          {exporting ? "Exporting..." : "Export CSV"}
+        </button>
+      </div>
 
       <table>
         <thead>
@@ -80,6 +86,7 @@ export function TicketsPage() {
               <td>
                 {requiresAccessFlag(ticket) ? <span className="flag">Access + High Priority</span> : null}
                 {isSlaRisk(ticket) ? <span className="flag risk">SLA Risk</span> : null}
+                {ticket.computed_sla_breached ? <span className="flag risk">SLA Breached</span> : null}
               </td>
             </tr>
           ))}

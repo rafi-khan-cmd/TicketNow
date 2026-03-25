@@ -5,6 +5,8 @@ import { TicketsPage } from "./pages/TicketsPage";
 import { TicketDetailPage } from "./pages/TicketDetailPage";
 import { NewTicketPage } from "./pages/NewTicketPage";
 import { MockLoginPage } from "./pages/MockLoginPage";
+import { AssetsPage } from "./pages/AssetsPage";
+import { KnowledgeBasePage } from "./pages/KnowledgeBasePage";
 import { AuthProvider } from "./context/AuthContext";
 
 export function App() {
@@ -18,6 +20,8 @@ export function App() {
           <Route path="/tickets" element={<TicketsPage />} />
           <Route path="/tickets/new" element={<NewTicketPage />} />
           <Route path="/tickets/:id" element={<TicketDetailPage />} />
+          <Route path="/assets" element={<AssetsPage />} />
+          <Route path="/knowledge-base" element={<KnowledgeBasePage />} />
         </Route>
       </Routes>
     </AuthProvider>

@@ -1,19 +1,29 @@
 import { env } from "../config/env.js";
 import {
   addNoteSchema,
+  createAssetSchema,
+  createKbArticleSchema,
   createTicketSchema,
+  kbListQuerySchema,
   ticketListQuerySchema,
+  updateAssetSchema,
   updateTicketSchema
 } from "../validators/ticketValidator.js";
 import {
+  createAsset,
+  createKnowledgeBaseArticle,
   createNote,
   createTicket,
   getAgents,
   getDashboardStats,
+  getKbSuggestionsForTicket,
   getTicketById,
   getTicketHistory,
   getTicketNotes,
+  listAssets,
+  listKnowledgeBase,
   listTickets,
+  updateAsset,
   updateTicket
 } from "../services/ticketService.js";
 
@@ -66,10 +76,13 @@ export async function exportTicketsCsv(req, res) {
     "category",
     "priority",
     "status",
+    "impact",
+    "urgency",
     "requester_name",
     "requester_email",
     "department",
     "assigned_agent_name",
+    "asset_tag",
     "created_at",
     "updated_at",
     "resolved_at"
@@ -93,8 +106,12 @@ export async function fetchTicket(req, res) {
   if (!ticket) {
     return res.status(404).json({ message: "Ticket not found" });
   }
-  const [notes, history] = await Promise.all([getTicketNotes(id), getTicketHistory(id)]);
-  res.json({ ticket, notes, history });
+  const [notes, history, kbSuggestions] = await Promise.all([
+    getTicketNotes(id),
+    getTicketHistory(id),
+    getKbSuggestionsForTicket(id)
+  ]);
+  res.json({ ticket, notes, history, kbSuggestions });
 }
 
 export async function createTicketHandler(req, res) {
@@ -117,4 +134,37 @@ export async function addNoteHandler(req, res) {
   const payload = parse(addNoteSchema, req.body);
   const note = await createNote(payload);
   res.status(201).json(note);
+}
+
+export async function fetchAssets(req, res) {
+  const assets = await listAssets();
+  res.json(assets);
+}
+
+export async function createAssetHandler(req, res) {
+  const payload = parse(createAssetSchema, req.body);
+  const asset = await createAsset(payload);
+  res.status(201).json(asset);
+}
+
+export async function updateAssetHandler(req, res) {
+  const id = Number(req.params.id);
+  const payload = parse(updateAssetSchema, req.body);
+  const asset = await updateAsset(id, payload);
+  if (!asset) {
+    return res.status(404).json({ message: "Asset not found" });
+  }
+  res.json(asset);
+}
+
+export async function fetchKnowledgeBase(req, res) {
+  const query = parse(kbListQuerySchema, req.query);
+  const articles = await listKnowledgeBase(query);
+  res.json(articles);
+}
+
+export async function createKnowledgeBaseHandler(req, res) {
+  const payload = parse(createKbArticleSchema, req.body);
+  const article = await createKnowledgeBaseArticle(payload);
+  res.status(201).json(article);
 }

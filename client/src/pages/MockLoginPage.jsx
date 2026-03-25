@@ -10,7 +10,8 @@ export function MockLoginPage() {
 
   function login(e) {
     e.preventDefault();
-    setUser({ name, role });
+    const userId = role === "Admin" ? 1 : role === "Agent" ? 2 : null;
+    setUser({ name, role, userId });
     navigate("/dashboard");
   }
 

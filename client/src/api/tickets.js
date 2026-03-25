@@ -2,6 +2,7 @@ import { http } from "./http";
 
 export const getDashboard = () => http("/dashboard");
 export const getAgents = () => http("/agents");
+export const listAssets = () => http("/assets");
 
 export function listTickets(params) {
   const query = new URLSearchParams(
@@ -35,3 +36,15 @@ export const createTicket = (payload) => http("/tickets", { method: "POST", body
 export const updateTicket = (id, payload) =>
   http(`/tickets/${id}`, { method: "PATCH", body: JSON.stringify(payload) });
 export const addNote = (payload) => http("/notes", { method: "POST", body: JSON.stringify(payload) });
+export const createAsset = (payload) => http("/assets", { method: "POST", body: JSON.stringify(payload) });
+export const updateAsset = (id, payload) => http(`/assets/${id}`, { method: "PATCH", body: JSON.stringify(payload) });
+
+export function listKnowledgeBase(params) {
+  const query = new URLSearchParams(
+    Object.entries(params || {}).filter(([, v]) => v !== undefined && v !== "")
+  ).toString();
+  return http(`/knowledge-base${query ? `?${query}` : ""}`);
+}
+
+export const createKnowledgeBase = (payload) =>
+  http("/knowledge-base", { method: "POST", body: JSON.stringify(payload) });
